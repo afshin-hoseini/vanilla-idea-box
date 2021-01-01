@@ -4,10 +4,11 @@
   padding: 0 8px;
   align-items: center;
   height: 100%;
+  padding-left: 31px;
 }
 
 .user-info-wrapper.large {
-  padding-left: 25px;
+  padding-left: 52px;
 }
 
 .user-info-pic {
@@ -15,6 +16,7 @@
   height: 35px;
   border-radius: 50%;
   margin-right: 12px;
+  transition: all 0.6s;
 }
 
 .user-info-pic.large {
@@ -24,24 +26,23 @@
 
 .user-info-container {
   display: flex;
-  flex-direction: column;
-}
-
-.user-info-container.large {
-  flex-direction: row;
   align-items: center;
 }
 
 .user-info-container .txt-date {
   font-size: 11px;
-}
-
-.user-info-container.large .txt-date {
-  font-size: 14px;
   color: gray;
   padding-left: 12px;
 }
 
+.user-info-container.large .txt-date {
+  font-size: 14px;
+}
+
 .user-info-container .txt-fullname {
   font-size: 14px;
+}
+
+.user-info-container.large .txt-fullname {
+  font-size: 17px;
 }

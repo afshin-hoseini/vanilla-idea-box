@@ -1,5 +1,6 @@
 import "./ideaBox.css";
 import UserInfo from "./userInfo/index";
+import { createBorderPath } from "./ideaBoxBorderGenerator";
 
 const ideaData = {
   fullName: "Afshin Hoseini",
@@ -11,41 +12,27 @@ const ideaData = {
  * @param {HTMLDivElement} container
  */
 export default function (container) {
-  const contentDiv = document.createElement("div");
+  const bkg = createContentBkg(container);
   const userInfoDiv = document.createElement("div");
   const textContentDiv = document.createElement("div");
-  const headerInfo = document.createElement("div");
 
-  contentDiv.classList.add("ib-content");
   userInfoDiv.classList.add("ib-user-info");
   textContentDiv.classList.add("ib-text");
 
-  headerInfo.classList.add("ib-header-info");
+  container.append(userInfoDiv, textContentDiv);
 
-  contentDiv.append(userInfoDiv, textContentDiv);
-  container.append(headerInfo, contentDiv);
-
-  const closeBtn = (function () {
-    const closebtn = document.createElement("button");
-    closebtn.classList.add("ib-close-btn");
-    closebtn.innerText = "Close";
-    return closebtn;
-  })();
-
-  UserInfo(userInfoDiv, { size: "small", ...ideaData });
-  createContentClipSvg();
+  const closeBtn = makeCloseButton();
+  const userInfo = UserInfo(userInfoDiv, { size: "large", ...ideaData });
+  // createBorderPath(1, 800, 543.64)
 
   const ideaBox = {
     open() {
-      contentDiv.classList.add("opened");
+      // contentDiv.classList.add("opened");
 
-      UserInfo(headerInfo, { size: "large", ...ideaData });
-      headerInfo.appendChild(closeBtn);
-
-      setTimeout(() => {
-        userInfoDiv.classList.add("disapeared");
-        headerInfo.classList.add("apeared");
-      }, 600);
+      bkg.setState("opened");
+      userInfoDiv.classList.add("opened");
+      userInfo.setSize("large");
+      setTimeout(() => {}, 600);
     },
     init() {}
   };
@@ -54,23 +41,45 @@ export default function (container) {
   return ideaBox;
 }
 
-function createContentClipSvg() {
-  document.body.appendChild(
-    (function () {
-      const svg = document.createElement("svg");
-      svg.setAttribute("width", "0");
-      svg.setAttribute("height", "0");
-      svg.id = "ib-content-svg";
-      svg.innerHTML = `
-      <defs>
-        <clipPath id="ib-content-clip">
-          <circle cx="100" cy="100" r="40" />
-          <circle cx="60" cy="60" r="40" />
-        </clipPath>
-      </defs>
-    `;
+function makeCloseButton() {
+  const closebtn = document.createElement("button");
+  closebtn.classList.add("ib-close-btn");
+  closebtn.innerText = "Close";
+  return closebtn;
+}
 
-      return svg;
-    })()
-  );
+/**
+ *
+ * @param {HTMLDivElement} container
+ */
+function createContentBkg(container) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add("ib-content-bkg");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.id = "p1";
+
+  svg.appendChild(path);
+
+  container.appendChild(svg);
+
+  const bkg = {
+    /**
+     * @param {"opened"|"closed"} state
+     */
+    setState(state) {
+      if (state === "opened") {
+        svg.classList.add("opened");
+        path.setAttribute("d", createBorderPath(1, 800, 600, 80, state));
+      } else {
+        svg.classList.remove("opened");
+        path.setAttribute("d", createBorderPath(1, 300, 300, 50, state));
+      }
+    },
+    init() {
+      this.setState("closed");
+    }
+  };
+
+  bkg.init();
+  return bkg;
 }
