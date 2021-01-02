@@ -12,6 +12,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(300px, 1fr));
   grid-gap: 5px;
+  grid-row-gap: 12px;
   width: 100%;
   justify-items: center;
 }

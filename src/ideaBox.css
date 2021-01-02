@@ -46,6 +46,7 @@
 .ib-content-bkg.opened {
   top: 50px;
   height: calc(100% - 60px);
+  border-radius: 20px;
 }
 
 .ib-content-bkg #p1 {

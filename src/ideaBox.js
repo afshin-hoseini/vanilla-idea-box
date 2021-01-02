@@ -69,10 +69,10 @@ function createContentBkg(container) {
     setState(state) {
       if (state === "opened") {
         svg.classList.add("opened");
-        path.setAttribute("d", createBorderPath(1, 800, 600, 80, state));
+        path.setAttribute("d", createBorderPath(1, 800, 600, 100, state));
       } else {
         svg.classList.remove("opened");
-        path.setAttribute("d", createBorderPath(1, 300, 300, 50, state));
+        path.setAttribute("d", createBorderPath(1, 300, 300, 70, state));
       }
     },
     init() {
