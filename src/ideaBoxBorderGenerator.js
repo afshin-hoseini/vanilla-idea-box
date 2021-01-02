@@ -3,13 +3,15 @@ const configs = {
     MouthRadius: 41,
     DepthRadius: 26,
     MouthWidth: 119,
-    MaxDepth: 20
+    MaxDepth: 20,
+    CornerRadius: 20
   },
   closed: {
     MouthRadius: 26,
     DepthRadius: 17,
     MouthWidth: 85,
-    MaxDepth: 14
+    MaxDepth: 14,
+    CornerRadius: 10
   }
 };
 
@@ -32,7 +34,8 @@ function createCurve(
   pc = 130,
   deep = 1,
   mouthRadius = 30,
-  depthRadius = 60
+  depthRadius = 60,
+  cornerRadius = 10
 ) {
   const pitStart = { x: pc - pw / 2, y: 0 };
   const pitEnd = { x: pitStart.x + pw, y: 0 };
@@ -44,15 +47,17 @@ function createCurve(
   const pc3 = controlPoint(0, depthRadius * deepAbs, pitDepth);
   const pc4 = controlPoint(-180, mouthRadius * deepAbs, pitEnd);
 
+  const cr = cornerRadius;
+
   const path = `
-  M0,0 
+  M${cr},0 
   L${pitStart.x},${pitStart.y} 
-  C${pc1.x},${pc1.y} ${pc2.x},${pc2.y} ${pitDepth.x},${pitDepth.y} 
-  C${pc3.x},${pc3.y} ${pc4.x},${pc4.y} ${pitEnd.x},${pitEnd.y}
-  L${w},0 
-  L${w},${h} 
-  L0,${h} 
-  L0,0
+  C${pc1.x},${pc1.y} ${pc2.x},${pc2.y} ${pitDepth.x},${pitDepth.y}  
+  C${pc3.x},${pc3.y} ${pc4.x},${pc4.y} ${pitEnd.x},${pitEnd.y} 
+  L${w - cr},0 a ${cr} ${cr} 0 0 1 ${cr},${cr} 
+  L${w},${h - cr} a ${cr} ${cr} 0 0 1 -${cr},${cr} 
+  L${cr},${h} a ${cr} ${cr} 0 0 1 -${cr},-${cr} 
+  L0,${cr} a ${cr} ${cr} 0 0 1 ${cr},-${cr} 
   `;
 
   return { path, pc1, pitStart, pc2, pc3, pc4 };
@@ -74,7 +79,8 @@ export function createBorderPath(
     profilePlaceholderCenterX,
     depthPercentage,
     params.MouthRadius,
-    params.DepthRadius
+    params.DepthRadius,
+    params.CornerRadius
   );
 
   return path;

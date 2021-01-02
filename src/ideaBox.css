@@ -40,16 +40,63 @@
   width: 100%;
   height: calc(100% - 30px);
   transition: all 0.4s;
-  border-radius: 10px;
+  stroke: 2px red;
 }
 
 .ib-content-bkg.opened {
   top: 50px;
   height: calc(100% - 60px);
-  border-radius: 20px;
 }
 
 .ib-content-bkg #p1 {
   fill: #efefef;
   transition: all 0.6s;
+}
+
+.ib-content-bkg.opened #p1 {
+  stroke: url(#gradient);
+  stroke-width: 3px;
+  paint-order: stroke;
+  stroke-dasharray: 0 1 200 10000;
+  /* animation: idle 1s; */
+}
+
+.ib-content-bkg.opened #p1.loading {
+  animation: loading 2s infinite ease-in-out;
+  animation-fill-mode: forwards;
+  animation-direction: alternate;
+}
+
+@keyframes loading {
+  0% {
+    stroke-dashoffset: 25%;
+  }
+
+  100% {
+    stroke-dashoffset: -20%;
+  }
+}
+
+#p1.finished {
+  animation: loading-finished 1s;
+}
+
+@keyframes loading-finished {
+  0% {
+    stroke-dashoffset: 25%;
+  }
+}
+
+#grad-stop.animate {
+  animation: grad-anim 4s ease-in-out infinite;
+  animation-direction: alternate;
+}
+
+@keyframes grad-anim {
+  0% {
+    stop-opacity: 1;
+  }
+  100% {
+    stop-opacity: 0.1;
+  }
 }

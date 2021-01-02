@@ -69,10 +69,23 @@ function createContentBkg(container) {
     setState(state) {
       if (state === "opened") {
         svg.classList.add("opened");
-        path.setAttribute("d", createBorderPath(1, 800, 600, 100, state));
+        svg.setAttribute("viewBox", "-1 -1 801 541");
+        path.setAttribute("d", createBorderPath(1, 799, 539, 100, state));
+
+        path.classList.add("loading");
+        setTimeout(() => {
+          path.onanimationend = () => {
+            console.log("===> FINISHED");
+            document.querySelector("#grad-stop").classList.add("animate");
+          };
+          path.onanimationiteration = () => {
+            console.log("===> Iteration");
+            path.classList.replace("loading", "finished");
+          };
+        }, 4000);
       } else {
         svg.classList.remove("opened");
-        path.setAttribute("d", createBorderPath(1, 300, 300, 70, state));
+        path.setAttribute("d", createBorderPath(1, 300, 270, 70, state));
       }
     },
     init() {
